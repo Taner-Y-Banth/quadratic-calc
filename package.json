@@ -1,0 +1,10 @@
+{
+    "type": "module",
+    "dependencies": {
+        "discord.js": "^12.5.3",
+        "minimist": "^1.2.6"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}
