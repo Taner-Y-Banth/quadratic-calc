@@ -50,7 +50,7 @@ bot.on('message', async (msg) => {
     }
 
     const secondsCalc = (message) => {
-        let secondsNum = secondsNum
+        let secondsNum = Number(message)
         let days = secondsNum / 86400
         let remainder = secondsNum % 86400
         let hours = remainder / 3600
