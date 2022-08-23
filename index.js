@@ -55,4 +55,7 @@ bot.on('message', async (msg) => {
             console.log(a, b, c);
         }
     }
+    if (command === 'seconds') {
+        msg.reply('this command is under construction');
+    }
 });
