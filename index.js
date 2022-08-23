@@ -49,6 +49,17 @@ bot.on('message', async (msg) => {
         }
     }
 
+    const secondsCalc = (message) => {
+        let secondsNum = secondsNum
+        let days = secondsNum / 86400
+        let remainder = secondsNum % 86400
+        let hours = remainder / 3600
+        let remainderHours = remainder % 3600
+        let minutes = remainderHours / 60
+        let seconds = remainderHours % 60
+        return [days.toFixed([0]),hours.toFixed([0]),minutes.toFixed([0]),seconds]
+    };
+
     if (command === 'calc') {
         if (quadraticCalc(a, b, c)) {
             msg.reply(quadraticCalc(a, b, c));
@@ -56,6 +67,6 @@ bot.on('message', async (msg) => {
         }
     }
     if (command === 'seconds') {
-        msg.reply('this command is under construction');
+        msg.reply(secondsCalc(message));
     }
 });
