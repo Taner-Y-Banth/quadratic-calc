@@ -76,6 +76,7 @@ bot.on('message', async (msg) => {
         msg.reply(secondsCalc(message));
     }
     if (command === 'diffuse') {
+        msg.reply('got it')
         nstClient.send('prompt', message)
         let tempId = msg.channel.id
         return tempId
