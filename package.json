@@ -2,7 +2,8 @@
     "type": "module",
     "dependencies": {
         "discord.js": "^12.5.3",
-        "minimist": "^1.2.6"
+        "minimist": "^1.2.6",
+        "nstrumenta": "^3.0.23"
     },
     "scripts": {
         "start": "node index.js"

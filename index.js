@@ -1,10 +1,16 @@
+import { channel } from 'diagnostics_channel';
 import Discord from 'discord.js';
+import { writeFile } from 'fs/promises';
 import minimist from 'minimist';
+import { NstrumentaClient } from 'nstrumenta';
+import ws from 'ws';
 
 const argv = minimist(process.argv.slice(2));
 const prefix = '-'
 const bot = new Discord.Client();
 const token = argv.token
+const nstClient = new NstrumentaClient();
+
 console.log(argv.token);
 bot.login(token);
 
@@ -69,4 +75,26 @@ bot.on('message', async (msg) => {
     if (command === 'seconds') {
         msg.reply(secondsCalc(message));
     }
+    if (command === 'diffuse') {
+        nstClient.send('prompt', message)
+        let tempId = msg.channel.id
+        return tempId
+    }
+
+    nstClient.addSubscription('postprocessing', async (msg) => {
+        console.log(msg);
+        const buff = new Uint8Array(msg)
+        const filename = `${Date.now()}.jpeg`
+        await writeFile(filename, buff);
+        await tempId.send({files:[filename]})
+    });
+
+    nstClient.addListener("open", () => {
+        console.log('websocket connection opened');
+    });
+    
+    console.log("nstrumenta connect");
+    
+    nstClient.connect({ wsUrl, nodeWebSocket: ws });
+
 });
