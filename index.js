@@ -7,9 +7,12 @@ import ws from 'ws';
 
 const argv = minimist(process.argv.slice(2));
 const prefix = '-'
+const wsUrl = argv.wsUrl
 const bot = new Discord.Client();
 const token = argv.token
 const nstClient = new NstrumentaClient();
+
+const runs = []
 
 console.log(argv.token);
 bot.login(token);
@@ -28,6 +31,24 @@ bot.on('message', async (msg) => {
 
     const message = args.join(' ');
     const abc = message.split(",");
+
+    runs.push(1)
+
+    if (runs[0] && !runs[1]) {
+        nstClient.addSubscription('postprocessing', async (msg) => {
+
+            console.log(msg);
+            const buff = new Uint8Array(msg)
+            const filename = `${Date.now()}.jpeg`
+            await writeFile(filename, buff);
+            const channel1 = bot.channels.cache.get('1019413448548962405');
+            const channel2 = bot.channels.cache.get('1019413448548962405');
+            await channel1.send({ files: [filename] })
+            await channel2.send({ files: [filename] })
+
+        });
+    };
+
 
     let a = Number(abc[0]);
     let b = Number(abc[1]);
@@ -67,35 +88,33 @@ bot.on('message', async (msg) => {
     };
 
     if (command === 'calc') {
+
         if (quadraticCalc(a, b, c)) {
             msg.reply(quadraticCalc(a, b, c));
             console.log(a, b, c);
         }
-    }
-    if (command === 'seconds') {
+
+
+    } else if (command === 'seconds') {
+
         msg.reply(secondsCalc(message));
-    }
-    if (command === 'diffuse') {
-        msg.reply('got it')
-        nstClient.send('prompt', message)
-        let tempId = msg.channel.id
-        return tempId
-    }
 
-    nstClient.addSubscription('postprocessing', async (msg) => {
-        console.log(msg);
-        const buff = new Uint8Array(msg)
-        const filename = `${Date.now()}.jpeg`
-        await writeFile(filename, buff);
-        await tempId.send({files:[filename]})
-    });
+    } else if (command === 'diffuse') {
 
-    nstClient.addListener("open", () => {
-        console.log('websocket connection opened');
-    });
-    
-    console.log("nstrumenta connect");
-    
-    nstClient.connect({ wsUrl, nodeWebSocket: ws });
+        msg.reply('got it');
+        nstClient.send('prompt', message);
+
+    }
 
 });
+
+
+nstClient.addListener("open", () => {
+
+    console.log('websocket connection opened');
+
+});
+
+console.log("nstrumenta connect");
+
+nstClient.connect({ wsUrl, nodeWebSocket: ws });
