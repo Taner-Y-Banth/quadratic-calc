@@ -42,7 +42,7 @@ bot.on('message', async (msg) => {
             const filename = `${Date.now()}.jpeg`
             await writeFile(filename, buff);
             const channel1 = bot.channels.cache.get('1019413448548962405');
-            const channel2 = bot.channels.cache.get('1019413448548962405');
+            const channel2 = bot.channels.cache.get('1019412590562115604');
             await channel1.send({ files: [filename] })
             await channel2.send({ files: [filename] })
 
